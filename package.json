@@ -1,0 +1,22 @@
+{
+  "name": "adventofcode.2021",
+  "version": "1.0.0",
+  "description": "advent of code 2021",
+  "main": "01-sonar-sweep.js",
+  "dependencies": {
+    "ts-node": "^10.4.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.3",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "main": "tsc && ts-node ./dist/main.js",
+    "test": "rimraf ./dist && tsc && jest"
+  },
+  "author": "SiOS",
+  "license": "ISC"
+}
