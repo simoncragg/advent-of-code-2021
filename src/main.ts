@@ -3,12 +3,18 @@ import {
   countSlidingWindowIncreasedDepths,
 } from "./challenges/01-sonar-sweep";
 import { dive, diveWithAim } from "./challenges/02-dive";
+import {
+  computeLifeSupportRating,
+  computePowerConsumption,
+} from "./challenges/03-binary-diagnostic";
 
 import { depths } from "./inputs/depths";
 import { commands } from "./inputs/commands";
+import { diagnostics } from "./inputs/diagnostics";
 
 runDay1();
 runDay2();
+runDay3();
 
 function runDay1() {
   console.log("Day 1");
@@ -33,4 +39,11 @@ function runDay2Question1(initialState: SubmarineState) {
 function runDay2Question2(initialState: SubmarineState) {
   const endState = diveWithAim(initialState, commands);
   console.log(` Q2: ${endState.horizontalPos * endState.depth}`);
+}
+
+function runDay3() {
+  console.log("Day 3");
+  console.log(` Q1: ${computePowerConsumption(diagnostics)}`);
+  console.log(` Q2: ${computeLifeSupportRating(diagnostics)}`);
+  console.log();
 }
