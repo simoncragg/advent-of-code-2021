@@ -11,16 +11,19 @@ import {
   computeWinningScore,
   computeLosingScore,
 } from "./challenges/04-giant-squid";
+import { computeOverlappingLinePoints } from "./challenges/05-hydrothermal-vents";
 
 import { depths } from "./inputs/depths";
 import { commands } from "./inputs/commands";
 import { diagnostics } from "./inputs/diagnostics";
 import { boardsData, generatedNumbers } from "./inputs/giant-squid-bingo";
+import { hydrothermalVentLines } from "./inputs/hydrothermal-vents";
 
 runDay1();
 runDay2();
 runDay3();
 runDay4();
+runDay5();
 
 function runDay1() {
   console.log("Day 1");
@@ -58,5 +61,16 @@ function runDay4() {
   console.log("Day 4");
   console.log(` Q1: ${computeWinningScore(boardsData, generatedNumbers)}`);
   console.log(` Q2: ${computeLosingScore(boardsData, generatedNumbers)}`);
+  console.log();
+}
+
+function runDay5() {
+  console.log("Day 5");
+  console.log(
+    ` Q1: ${computeOverlappingLinePoints(hydrothermalVentLines, false)}`
+  );
+  console.log(
+    ` Q2: ${computeOverlappingLinePoints(hydrothermalVentLines, true)}`
+  );
   console.log();
 }
