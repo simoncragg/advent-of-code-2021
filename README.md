@@ -1,15 +1,15 @@
 # advent-of-code-2021
 
-Advent of Code 2021
+[Advent of Code 2021](https://adventofcode.com/2021)
 
 ## set up
 
-npm i
+    npm i
 
 ## run challenges
 
-npm run main
+    npm run main
 
 ## run tests
 
-npm test
+    npm test
