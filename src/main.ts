@@ -7,14 +7,20 @@ import {
   computeLifeSupportRating,
   computePowerConsumption,
 } from "./challenges/03-binary-diagnostic";
+import {
+  computeWinningScore,
+  computeLosingScore,
+} from "./challenges/04-giant-squid";
 
 import { depths } from "./inputs/depths";
 import { commands } from "./inputs/commands";
 import { diagnostics } from "./inputs/diagnostics";
+import { boardsData, generatedNumbers } from "./inputs/giant-squid-bingo";
 
 runDay1();
 runDay2();
 runDay3();
+runDay4();
 
 function runDay1() {
   console.log("Day 1");
@@ -45,5 +51,12 @@ function runDay3() {
   console.log("Day 3");
   console.log(` Q1: ${computePowerConsumption(diagnostics)}`);
   console.log(` Q2: ${computeLifeSupportRating(diagnostics)}`);
+  console.log();
+}
+
+function runDay4() {
+  console.log("Day 4");
+  console.log(` Q1: ${computeWinningScore(boardsData, generatedNumbers)}`);
+  console.log(` Q2: ${computeLosingScore(boardsData, generatedNumbers)}`);
   console.log();
 }
