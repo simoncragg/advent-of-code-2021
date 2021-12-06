@@ -26,9 +26,8 @@ describe("giant squid bingo", () => {
     expect(winningScore).toEqual(4512);
   });
 
-  it.only("computLosingScore must return 1924", () => {
+  it("computLosingScore must return 1924", () => {
     const losingScore = computeLosingScore(boardsData, generatedNumbers);
     expect(losingScore).toEqual(1924);
-    console.log("losingScore:", losingScore);
   });
 });
