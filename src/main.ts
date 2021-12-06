@@ -15,7 +15,6 @@ import {
 import { computeOverlappingLinePoints } from "./challenges/05-hydrothermal-vents";
 
 import { boardsData, generatedNumbers } from "./inputs/giant-squid-bingo";
-import { diagnostics } from "./inputs/diagnostics";
 
 runDay1();
 runDay2();
@@ -61,8 +60,9 @@ function runDay2Question2(
 
 function runDay3() {
   console.log("Day 3");
-  //const diagnostics = loadInput("diagnostics.txt").split("\n");
-  //diagnostics.forEach((d) => console.log(d));
+  const diagnostics = loadInput("diagnostics.txt")
+    .split("\r\n")
+    .map((b) => b.toString().trim());
   console.log(` Q1: ${computePowerConsumption(diagnostics)}`);
   console.log(` Q2: ${computeLifeSupportRating(diagnostics)}`);
   console.log();
