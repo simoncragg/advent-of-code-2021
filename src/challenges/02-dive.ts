@@ -61,5 +61,5 @@ export const diveWithAim = (
 
 export const mapToCommand = (commandDescription: string): Command => {
   const parts = commandDescription.split(" ");
-  return { direction: parts[0].toLowerCase(), steps: parseInt(parts[1]) };
+  return { direction: parts[0].toLowerCase(), steps: parseInt(parts[1], 10) };
 };

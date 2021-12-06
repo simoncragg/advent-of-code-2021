@@ -3,7 +3,7 @@ export const convertToBase10 = (binaryStr: string) => {
   let currentPlaceValue = 1;
   for (let bitIndex = binaryStr.length - 1; bitIndex >= 0; bitIndex--) {
     var bitStr = binaryStr[bitIndex];
-    runningTotal += currentPlaceValue * parseInt(bitStr);
+    runningTotal += currentPlaceValue * parseInt(bitStr, 10);
     currentPlaceValue *= 2;
   }
 

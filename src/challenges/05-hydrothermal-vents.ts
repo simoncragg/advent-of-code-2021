@@ -121,12 +121,12 @@ function mapToLine(lineStr: string): Line {
   const startCoords = linePoints[0]
     .trim()
     .split(",")
-    .map((numStr) => parseInt(numStr));
+    .map((numStr) => parseInt(numStr, 10));
 
   const endCoords = linePoints[1]
     .trim()
     .split(",")
-    .map((numStr) => parseInt(numStr));
+    .map((numStr) => parseInt(numStr, 10));
 
   const startPoint = {
     x: startCoords[0],
