@@ -13,6 +13,10 @@ import {
   computeLosingScore,
 } from "./challenges/04-giant-squid";
 import { computeOverlappingLinePoints } from "./challenges/05-hydrothermal-vents";
+import {
+  computePopulation1,
+  computePopulation2,
+} from "./challenges/06-lanternfish";
 
 import { boardsData, generatedNumbers } from "./inputs/giant-squid-bingo";
 
@@ -21,6 +25,7 @@ runDay2();
 runDay3();
 runDay4();
 runDay5();
+runDay6();
 
 function runDay1() {
   console.log("Day 1");
@@ -85,6 +90,15 @@ function runDay5() {
     ` Q2: ${computeOverlappingLinePoints(hydrothermalVentLines, true)}`
   );
   console.log();
+}
+
+function runDay6() {
+  console.log("Day 6");
+  const initialPopulation = loadInput("lanternfish.txt")
+    .split(",")
+    .map((n) => parseInt(n, 10));
+  console.log(` Q1: ${computePopulation1(80, initialPopulation)}`);
+  console.log(` Q2: ${computePopulation2(256, initialPopulation)}`);
 }
 
 function loadInput(filename: string) {
