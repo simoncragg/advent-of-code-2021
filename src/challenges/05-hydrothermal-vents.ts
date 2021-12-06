@@ -74,40 +74,44 @@ function plotLine(
   includeDiagonals: boolean
 ) {
   if (isHorizontalLine(line)) {
-    const y = line.startPoint.y;
-    const startX = Math.min(line.startPoint.x, line.endPoint.x);
-    const endX = Math.max(line.startPoint.x, line.endPoint.x);
-    for (let x = startX; x <= endX; x++) {
-      graph[y][x].plottedLinePoints += 1;
-    }
+    plotHorizontalLine(line, graph);
   } else if (isVerticalLine(line)) {
-    const x = line.startPoint.x;
-    const startY = Math.min(line.startPoint.y, line.endPoint.y);
-    const endY = Math.max(line.startPoint.y, line.endPoint.y);
-    for (let y = startY; y <= endY; y++) {
-      graph[y][x].plottedLinePoints += 1;
-    }
+    plotVerticalLine(line, graph);
   } else if (includeDiagonals) {
-    const startY = Math.min(line.startPoint.y, line.endPoint.y); // 0
-    const endY = Math.max(line.startPoint.y, line.endPoint.y); // 8
+    plotDiagonalLine(line, graph);
+  }
+}
 
-    let startX = line.startPoint.x;
-    let endX = line.endPoint.x;
+function plotHorizontalLine(line: Line, graph: GraphPoint[][]) {
+  const y = line.startPoint.y;
+  const startX = Math.min(line.startPoint.x, line.endPoint.x);
+  const endX = Math.max(line.startPoint.x, line.endPoint.x);
+  for (let x = startX; x <= endX; x++) {
+    graph[y][x].plottedLinePoints += 1;
+  }
+}
 
-    if (startY !== line.startPoint.y) {
-      startX = line.endPoint.x;
-      endX = line.startPoint.x;
-    }
+function plotVerticalLine(line: Line, graph: GraphPoint[][]) {
+  const x = line.startPoint.x;
+  const startY = Math.min(line.startPoint.y, line.endPoint.y);
+  const endY = Math.max(line.startPoint.y, line.endPoint.y);
+  for (let y = startY; y <= endY; y++) {
+    graph[y][x].plottedLinePoints += 1;
+  }
+}
 
-    let x = startX;
-    for (let y = startY; y <= endY; y++) {
-      graph[y][x].plottedLinePoints += 1;
-      if (startX < endX) {
-        x++;
-      } else {
-        x--;
-      }
-    }
+function plotDiagonalLine(line: Line, graph: GraphPoint[][]) {
+  const startY = Math.min(line.startPoint.y, line.endPoint.y);
+  const endY = Math.max(line.startPoint.y, line.endPoint.y);
+
+  const isFlipped = startY !== line.startPoint.y;
+  let startX = isFlipped ? line.endPoint.x : line.startPoint.x;
+  let endX = isFlipped ? line.startPoint.x : line.endPoint.x;
+
+  let x = startX;
+  for (let y = startY; y <= endY; y++) {
+    graph[y][x].plottedLinePoints += 1;
+    x += startX < endX ? 1 : -1;
   }
 }
 
