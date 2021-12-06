@@ -8,16 +8,7 @@ export const computeOverlappingLinePoints = (
   const graph = buildGraph(rowSize, columnSize);
 
   lines.forEach((line) => plotLine(line, graph, includeDiagonals));
-
-  for (let y = 0; y < graph.length; y++) {
-    let cells = "";
-    for (let x = 0; x < graph[y].length; x++) {
-      const plottedLinePoints = graph[y][x].plottedLinePoints;
-      const cell = plottedLinePoints > 0 ? plottedLinePoints : ".";
-      cells += cell;
-    }
-    console.log(cells);
-  }
+  //logGraph(graph);
 
   let overlappingPoints = 0;
   graph.forEach((row) =>
@@ -30,6 +21,18 @@ export const computeOverlappingLinePoints = (
 
   return overlappingPoints;
 };
+
+function logGraph(graph: Array<Array<GraphPoint>>) {
+  for (let y = 0; y < graph.length; y++) {
+    let cells = "";
+    for (let x = 0; x < graph[y].length; x++) {
+      const plottedLinePoints = graph[y][x].plottedLinePoints;
+      const cell = plottedLinePoints > 0 ? plottedLinePoints : ".";
+      cells += cell;
+    }
+    console.log(cells);
+  }
+}
 
 function getMaxX(lines: Array<Line>) {
   return Math.max(
