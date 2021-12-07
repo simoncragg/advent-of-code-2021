@@ -17,6 +17,7 @@ import {
   computePopulation1,
   computePopulation2,
 } from "./challenges/06-lanternfish";
+import { computeCheapestAlignment } from "./challenges/07-treachery-of-whales";
 
 import { boardsData, generatedNumbers } from "./inputs/giant-squid-bingo";
 
@@ -26,6 +27,7 @@ runDay3();
 runDay4();
 runDay5();
 runDay6();
+runDay7();
 
 function runDay1() {
   console.log("Day 1");
@@ -99,8 +101,19 @@ function runDay6() {
     .map((n) => parseInt(n, 10));
   console.log(` Q1: ${computePopulation1(80, initialPopulation)}`);
   console.log(` Q2: ${computePopulation2(256, initialPopulation)}`);
+  console.log();
 }
 
 function loadInput(filename: string) {
   return fs.readFileSync(`inputs/${filename}`, "utf8");
+}
+
+function runDay7() {
+  console.log("Day 7");
+  const positions = loadInput("crab-submarine-positions.txt")
+    .split(",")
+    .map((n) => parseInt(n, 10));
+  //const positions = [16, 1, 2, 0, 4, 2, 7, 1, 2, 14];
+  console.log(` Q1: ${computeCheapestAlignment(positions, false)}`);
+  console.log(` Q2: ${computeCheapestAlignment(positions, true)}`);
 }
