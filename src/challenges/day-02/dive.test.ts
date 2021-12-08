@@ -9,7 +9,7 @@ describe("Day 2", () => {
       ["example.txt", 150],
       ["challenge.txt", 2019945],
     ])(
-      "must return a result whose horizontal pos * depth is %p",
+      "when passed %p input returns a result whose horizontal pos * depth is %p",
       (filename: string, expected: number) => {
         const commands = readFile(`input/day-02/${filename}`).split("\n");
         const endState = dive(initialState, commands);
@@ -23,7 +23,7 @@ describe("Day 2", () => {
       ["example.txt", 900],
       ["challenge.txt", 1599311480],
     ])(
-      "must return a result whose horizontalPos * depth is %p",
+      "when passed %p input returns a result whose horizontal pos * depth is %p",
       (filename: string, expected: number) => {
         const commands = readFile(`input/day-02/${filename}`).split("\n");
         const endState = diveWithAim(initialState, commands);

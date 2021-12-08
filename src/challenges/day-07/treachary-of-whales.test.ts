@@ -7,7 +7,7 @@ describe("the treachery of whales", () => {
       ["example.txt", 37],
       ["challenge.txt", 353800],
     ])(
-      "given %p input, returns  %p when using static fuel cost",
+      "when passed %p input, returns  %p when using static fuel cost",
       (filename: string, expected: number) => {
         const positons = readFile(`input/day-07/${filename}`)
           .split(",")
@@ -21,7 +21,7 @@ describe("the treachery of whales", () => {
       ["example.txt", 168],
       ["challenge.txt", 98119739],
     ])(
-      "given %p input, returns  %p when using incremental fuel cost",
+      "when passed %p input, returns  %p when using incremental fuel cost",
       (filename: string, expected: number) => {
         const positons = readFile(`input/day-07/${filename}`)
           .split(",")

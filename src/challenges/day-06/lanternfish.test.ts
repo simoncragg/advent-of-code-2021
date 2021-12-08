@@ -8,7 +8,7 @@ describe("lanternfish", () => {
       ["example.txt", 80, 5934],
       ["challenge.txt", 80, 354564],
     ])(
-      "after %p days returns %p",
+      "when passed %p input, after %p days returns %p",
       (filename: string, daysToSimulate: number, expected: number) => {
         const initialPopulation = readFile(`input/day-06/${filename}`)
           .split(",")
@@ -22,7 +22,7 @@ describe("lanternfish", () => {
 
   describe("computePopulation2", () => {
     it.each([["challenge.txt", 256, 1609058859115]])(
-      "after %p days returns %p",
+      "when passed %p input, after %p days returns %p",
       (filename: string, daysToSimulate: number, expected: number) => {
         const initialPopulation = readFile(`input/day-06/${filename}`)
           .split(",")

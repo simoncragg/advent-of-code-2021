@@ -11,7 +11,7 @@ describe("Day 3", () => {
       ["example.txt", 198],
       ["challenge.txt", 4006064],
     ])(
-      "must compute power consumption as %p",
+      "when passed %p input returns %p",
       (filename: string, expected: number) => {
         const diagnostics = readFile(`input/day-03/${filename}`)
           .split("\r\n")
@@ -26,7 +26,7 @@ describe("Day 3", () => {
       ["example.txt", 230],
       ["challenge.txt", 5941884],
     ])(
-      "must compute life support rating as %p",
+      "when passed %p input returns %p",
       (filename: string, expected: number) => {
         const diagnostics = readFile(`input/day-03/${filename}`)
           .split("\r\n")
