@@ -1,4 +1,4 @@
-import { convertToBase10 } from "../utils/base-convertion";
+import { convertToBase10 } from "../../utils/base-convertion";
 
 export const computePowerConsumption = (diagnostics: Array<string>): number => {
   const gammaRate = computeRate(diagnostics, true);

@@ -1,4 +1,4 @@
-import { computeWinningScore, computeLosingScore } from "../04-giant-squid";
+import { computeWinningScore, computeLosingScore } from "./giant-squid";
 
 describe("giant squid bingo", () => {
   const generatedNumbers = [

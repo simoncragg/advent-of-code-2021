@@ -15,9 +15,8 @@
     "typescript": "^4.5.2"
   },
   "scripts": {
-    "main": "tsc && npm run copy-inputs && ts-node ./dist/main.js",
-    "test": "rimraf ./dist && tsc && jest",
-    "copy-inputs": "copyfiles -u 1 inputs/*.txt dist/inputs"
+    "test": "rimraf ./dist && tsc && npm run copy-inputs && jest",
+    "copy-inputs": "copyfiles -u 1 input/**/*.txt dist/input"
   },
   "author": "SiOS",
   "license": "ISC"
