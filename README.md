@@ -6,10 +6,6 @@
 
     npm i
 
-## run challenges
-
-    npm run main
-
 ## run tests
 
     npm test
