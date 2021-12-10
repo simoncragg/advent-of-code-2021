@@ -3,7 +3,6 @@ import {
   decodeNumber,
 } from "./seven-segment-search";
 import { readFile } from "../../utils/file-util";
-import { createInputFiles } from "typescript";
 
 describe("seven segment search", () => {
   describe("countUniqueOutInstances", () => {
