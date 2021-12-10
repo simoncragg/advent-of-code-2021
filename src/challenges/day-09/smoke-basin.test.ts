@@ -1,7 +1,7 @@
 import { computeRiskLevel, findBasinsResult } from "./smoke-basin";
 import { readFile } from "../../utils/file-util";
 
-describe("seven segment search", () => {
+describe("smoke basin", () => {
   describe("computeRiskLevel", () => {
     it.each([
       ["example.txt", 15],

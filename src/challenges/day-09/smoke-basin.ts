@@ -80,14 +80,13 @@ function findHigherPoints(
   startPoint: FlowPoint,
   heightMap: Array<Array<number>>
 ): Array<FlowPoint> {
-  const maxHeight = 8;
   const higherPoints = Array<FlowPoint>();
   const { r, c, height } = startPoint;
 
   if (!isTopRow(r)) {
     let row = r - 1;
     let neighbourHeight = heightMap[row][c];
-    if (isHigherAndInRange(height, neighbourHeight, maxHeight)) {
+    if (isHigherAndInRange(neighbourHeight, height)) {
       higherPoints.push({ r: row, c, height: neighbourHeight });
     }
   }
@@ -95,7 +94,7 @@ function findHigherPoints(
   if (!isRightMostColumn(r, c, heightMap)) {
     let col = c + 1;
     let neighbourHeight = heightMap[r][col];
-    if (height < neighbourHeight && neighbourHeight <= maxHeight) {
+    if (isHigherAndInRange(neighbourHeight, height)) {
       higherPoints.push({ r, c: col, height: neighbourHeight });
     }
   }
@@ -103,7 +102,7 @@ function findHigherPoints(
   if (!isBottomRow(r, heightMap)) {
     let row = r + 1;
     let neighbourHeight = heightMap[row][c];
-    if (height < neighbourHeight && neighbourHeight <= maxHeight) {
+    if (isHigherAndInRange(neighbourHeight, height)) {
       higherPoints.push({ r: row, c, height: neighbourHeight });
     }
   }
@@ -111,7 +110,7 @@ function findHigherPoints(
   if (!isLeftMostColumn(c)) {
     let col = c - 1;
     let neighbourHeight = heightMap[r][col];
-    if (height < neighbourHeight && neighbourHeight <= maxHeight) {
+    if (isHigherAndInRange(neighbourHeight, height)) {
       higherPoints.push({ r, c: col, height: neighbourHeight });
     }
   }
@@ -119,12 +118,9 @@ function findHigherPoints(
   return higherPoints;
 }
 
-function isHigherAndInRange(
-  height: number,
-  neighbourHeight: number,
-  maxHeight: number
-) {
-  return height < neighbourHeight && neighbourHeight <= maxHeight;
+function isHigherAndInRange(height: number, referenceHeight: number) {
+  const maxHeight = 8;
+  return height > referenceHeight && height <= maxHeight;
 }
 
 function isTopRow(r: number): boolean {
