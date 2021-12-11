@@ -46,7 +46,7 @@ describe("syntax scoring", () => {
   });
 
   describe("computeMiddleAutoCompleteScore", () => {
-    it.only.each([
+    it.each([
       ["example.txt", 288957],
       ["challenge.txt", 4038824534],
     ])(

@@ -8,20 +8,14 @@ export const computeErrorScore = (lines: Array<string>): number => {
 
     for (let charIndex = 0; charIndex < characters.length; charIndex++) {
       const character = characters[charIndex];
-      if (isOpening(character)) {
-        addChunk(character, chunks);
-      } else {
-        try {
-          const chunkToClose = findChunkToCloseRecursive(character, chunks);
-          if (chunkToClose) {
-            chunkToClose.isOpen = false;
-          }
-        } catch (error: any) {
-          if (error.message === "Syntax Error") {
-            errorScore += getCharacterPoints(character);
-            break;
-          }
-        }
+      let abort = false;
+      processCharacter(character, chunks, (error) => {
+        abort = true;
+        errorScore += getCharacterPoints(character);
+      });
+
+      if (abort) {
+        break;
       }
     }
   }
@@ -32,39 +26,50 @@ export const computeErrorScore = (lines: Array<string>): number => {
 export const computeMiddleAutoCompleteScore = (
   lines: Array<string>
 ): number => {
-  const lineCompletionResults = getLineCompletions(lines).map((lc) => {
-    return { syntax: lc, score: 0 } as any;
-  });
-  const pointsLookup = "0)]}>";
-
-  for (const lineCompletionResult of lineCompletionResults) {
-    for (const closingCharacter of lineCompletionResult.syntax.split("")) {
-      const point = pointsLookup.indexOf(closingCharacter);
-      lineCompletionResult.score *= 5;
-      lineCompletionResult.score += point;
+  const lineCompletionResults = getLineCompletions(lines).map(
+    (lineCompletion) => {
+      return {
+        syntax: lineCompletion,
+        score: 0,
+      } as LineCompletionResult;
     }
-  }
-
-  const orderedLineCompletionResultsByScore = lineCompletionResults.sort(
-    (a, b) => a.score - b.score
   );
 
-  for (let i = 0; i < orderedLineCompletionResultsByScore.length; i++) {
-    const resultsBelow = i;
-    const resultsAbove = orderedLineCompletionResultsByScore.length - 1 - i;
+  lineCompletionResults.forEach((result) => scoreResult(result));
+  const orderedScores = lineCompletionResults
+    .sort((a, b) => a.score - b.score)
+    .map((result) => result.score);
 
-    if (resultsBelow === resultsAbove) {
-      return orderedLineCompletionResultsByScore[i].score;
-    }
-  }
-
-  return 0;
+  return findMiddleScore(orderedScores);
 };
 
 export const getLineCompletions = (lines: Array<string>): Array<string> => {
   const incompleteLines = findIncompleteLines(lines);
   return incompleteLines.map(getLineCompletion);
 };
+
+function findMiddleScore(orderedScores: Array<number>): number {
+  for (let i = 0; i < orderedScores.length; i++) {
+    const resultsBelow = i;
+    const resultsAbove = orderedScores.length - 1 - i;
+
+    if (resultsBelow === resultsAbove) {
+      return orderedScores[i];
+    }
+  }
+
+  return 0;
+}
+
+function scoreResult(result: LineCompletionResult): void {
+  const pointsLookup = "0)]}>";
+  result.score = 0;
+  for (const closingCharacter of result.syntax.split("")) {
+    const point = pointsLookup.indexOf(closingCharacter);
+    result.score *= 5;
+    result.score += point;
+  }
+}
 
 function findIncompleteLines(syntaxLines: Array<string>): Array<Array<Chunk>> {
   const incompleteLines = Array<Array<Chunk>>();
@@ -74,7 +79,15 @@ function findIncompleteLines(syntaxLines: Array<string>): Array<Array<Chunk>> {
 
     for (let charIndex = 0; charIndex < characters.length; charIndex++) {
       const character = characters[charIndex];
-      processCharacter(character, chunks);
+      let didError = false;
+      processCharacter(character, chunks, (error) => {
+        didError = true;
+      });
+
+      if (didError) {
+        chunks.forEach((chunk) => (chunk.hasError = true));
+        break;
+      }
     }
 
     if (!hasError(chunks)) {
@@ -85,7 +98,11 @@ function findIncompleteLines(syntaxLines: Array<string>): Array<Array<Chunk>> {
   return incompleteLines;
 }
 
-function processCharacter(character: string, chunks: Array<Chunk>) {
+function processCharacter(
+  character: string,
+  chunks: Array<Chunk>,
+  onSyntaxError: (error: Error) => void
+) {
   if (isOpening(character)) {
     addChunk(character, chunks);
   } else {
@@ -96,7 +113,7 @@ function processCharacter(character: string, chunks: Array<Chunk>) {
       }
     } catch (error: any) {
       if (error.message === "Syntax Error") {
-        chunks.forEach((chunk) => (chunk.hasError = true));
+        onSyntaxError(error);
         return;
       }
     }
