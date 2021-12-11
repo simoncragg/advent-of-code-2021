@@ -4,10 +4,12 @@
   "description": "advent of code 2021",
   "main": "main.js",
   "dependencies": {
-    "ts-node": "^10.4.0"
+    "ts-node": "^10.4.0",
+    "uuid4": "^2.0.2"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
+    "@types/uuid4": "^2.0.0",
     "copyfiles": "^2.4.1",
     "jest": "^27.4.3",
     "rimraf": "^3.0.2",
