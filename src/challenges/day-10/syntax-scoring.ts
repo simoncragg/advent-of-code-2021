@@ -48,6 +48,16 @@ export const getLineCompletions = (lines: Array<string>): Array<string> => {
   return incompleteLines.map(getLineCompletion);
 };
 
+function scoreResult(result: LineCompletionResult): void {
+  const pointsLookup = "0)]}>";
+  result.score = 0;
+  for (const closingCharacter of result.syntax.split("")) {
+    const point = pointsLookup.indexOf(closingCharacter);
+    result.score *= 5;
+    result.score += point;
+  }
+}
+
 function findMiddleScore(orderedScores: Array<number>): number {
   for (let i = 0; i < orderedScores.length; i++) {
     const resultsBelow = i;
@@ -59,16 +69,6 @@ function findMiddleScore(orderedScores: Array<number>): number {
   }
 
   return 0;
-}
-
-function scoreResult(result: LineCompletionResult): void {
-  const pointsLookup = "0)]}>";
-  result.score = 0;
-  for (const closingCharacter of result.syntax.split("")) {
-    const point = pointsLookup.indexOf(closingCharacter);
-    result.score *= 5;
-    result.score += point;
-  }
 }
 
 function findIncompleteLines(syntaxLines: Array<string>): Array<Array<Chunk>> {
