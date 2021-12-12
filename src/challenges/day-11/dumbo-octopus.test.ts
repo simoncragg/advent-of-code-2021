@@ -6,7 +6,7 @@ import { readFile } from "../../utils/file-util";
 
 describe("dumbo octopus", () => {
   describe("computeTotalFlashes", () => {
-    it.only.each([
+    it.each([
       ["example.txt", 100, 1656],
       ["challenge.txt", 100, 1647],
     ])(
