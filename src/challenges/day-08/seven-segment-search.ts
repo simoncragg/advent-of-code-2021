@@ -1,3 +1,5 @@
+import { arraysEqual } from "../../utils/array-utils";
+
 export function countUniqueOutputInstances(input: Array<string>): number {
   const outputs = input.map((s) => s.split("|")[1].trim());
 
@@ -161,17 +163,6 @@ function getHashMapValue(
       return entry.value[1];
     }
   }
-}
-
-function arraysEqual(a: Array<number>, b: Array<number>) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
-
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
 }
 
 function getNumber(num: string): Array<number> {
