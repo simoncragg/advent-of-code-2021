@@ -1,45 +1,45 @@
 export const countDotsAfterOneFold = (inputLines: Array<string>): number => {
-  let coordinates = mapToCoordinates(inputLines);
+  let dotCoords = mapToCoordinates(inputLines);
   const foldingInstructions = mapToFoldInstructions(inputLines);
 
-  let pointsCount = new Array<number>();
-  coordinates = performFold(coordinates, foldingInstructions[0]);
-  pointsCount.push(coordinates.length);
+  let dotsCount = new Array<number>();
+  dotCoords = performFold(dotCoords, foldingInstructions[0]);
+  dotsCount.push(dotCoords.length);
 
-  logPaper(coordinates);
-  return pointsCount[0];
+  logPaper(dotCoords);
+  return dotsCount[0];
 };
 
 export const countDotsAfterAllFolds = (inputLines: Array<string>): number => {
-  let coordinates = mapToCoordinates(inputLines);
+  let dotCoords = mapToCoordinates(inputLines);
   const foldInstructions = mapToFoldInstructions(inputLines);
 
-  let pointsCount = new Array<number>();
+  let dotsCount = new Array<number>();
   for (const foldInstruction of foldInstructions) {
-    coordinates = performFold(coordinates, foldInstruction);
-    pointsCount.push(coordinates.length);
+    dotCoords = performFold(dotCoords, foldInstruction);
+    dotsCount.push(dotCoords.length);
   }
 
-  logPaper(coordinates);
-  return pointsCount[0];
+  logPaper(dotCoords);
+  return dotsCount[0];
 };
 
 function mapToCoordinates(inputLines: Array<string>): Array<Coordinate> {
-  let points = Array<Coordinate>();
+  let coords = Array<Coordinate>();
   for (let i = 0; i < inputLines.length; i++) {
     const line = inputLines[i];
-    const coords = line.split(",").map((n) => parseInt(n, 10));
+    const coordParts = line.split(",").map((n) => parseInt(n, 10));
 
-    if (coords.length === 1) {
+    if (coordParts.length === 1) {
       break;
     }
 
-    const x = coords[0];
-    const y = coords[1];
-    points.push({ x, y });
+    const x = coordParts[0];
+    const y = coordParts[1];
+    coords.push({ x, y });
   }
 
-  return points;
+  return coords;
 }
 
 function mapToFoldInstructions(
@@ -64,22 +64,22 @@ function mapToFoldInstructions(
 }
 
 function performFold(
-  coordinates: Array<Coordinate>,
+  dotCoords: Array<Coordinate>,
   foldInstruction: FoldInstruction
 ): Array<Coordinate> {
-  const newCoords = getStaticCoords(coordinates, foldInstruction);
-  const foldingCoords = getFoldingCoords(coordinates, foldInstruction);
+  const newCoords = getStaticCoords(dotCoords, foldInstruction);
+  const foldingCoords = getFoldingCoords(dotCoords, foldInstruction);
 
   for (const coord of foldingCoords) {
-    const newCoordinate = foldCoord(coord, foldInstruction);
+    const foldedCoord = foldCoord(coord, foldInstruction);
 
     // TODO: use a hash to improve performance
     if (
       !newCoords.find(
-        (coord) => coord.x === newCoordinate.x && coord.y === newCoordinate.y
+        (coord) => coord.x === foldedCoord.x && coord.y === foldedCoord.y
       )
     ) {
-      newCoords.push(newCoordinate);
+      newCoords.push(foldedCoord);
     }
   }
 
@@ -96,21 +96,21 @@ function foldCoord(
 }
 
 function getStaticCoords(
-  coordinates: Array<Coordinate>,
+  coords: Array<Coordinate>,
   foldInstruction: FoldInstruction
 ): Array<Coordinate> {
   return foldInstruction.isXAxis
-    ? coordinates.filter((coord) => coord.x < foldInstruction.foldPoint)
-    : coordinates.filter((coord) => coord.y < foldInstruction.foldPoint);
+    ? coords.filter((coord) => coord.x < foldInstruction.foldPoint)
+    : coords.filter((coord) => coord.y < foldInstruction.foldPoint);
 }
 
 function getFoldingCoords(
-  coordinates: Array<Coordinate>,
+  coords: Array<Coordinate>,
   foldInstruction: FoldInstruction
 ): Array<Coordinate> {
   return foldInstruction.isXAxis
-    ? coordinates.filter((coord) => coord.x > foldInstruction.foldPoint)
-    : coordinates.filter((coord) => coord.y > foldInstruction.foldPoint);
+    ? coords.filter((coord) => coord.x > foldInstruction.foldPoint)
+    : coords.filter((coord) => coord.y > foldInstruction.foldPoint);
 }
 
 function logPaper(coordinates: Array<Coordinate>): void {
