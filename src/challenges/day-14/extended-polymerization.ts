@@ -2,85 +2,106 @@ export const computePolymerizationSum = (
   input: Array<string>,
   steps: number
 ): number => {
-  const polymer = performPolymerization(input, steps);
-  const elementStats = polymer
-    .split("")
-    .filter((element, i, self) => self.indexOf(element) === i)
-    .map((element) => {
-      return { element, quantity: 0 } as any;
-    });
-
-  for (let stat of elementStats) {
-    stat.quantity = polymer.split("").filter((el) => el == stat.element).length;
-  }
-
-  const orderedStats = elementStats.sort((a, b) => a.quantity - b.quantity);
-  const mostCommonElement = orderedStats[orderedStats.length - 1];
-  const leastCommonElement = orderedStats[0];
-
-  console.log(orderedStats);
-
-  return mostCommonElement.quantity - leastCommonElement.quantity;
-};
-
-export function performPolymerization(
-  input: Array<string>,
-  steps: number
-): string {
   const [polymerTemplate, pairInsertionRules] = mapInputs(input);
 
-  console.log(polymerTemplate);
-  console.log("-----------------------");
-  console.log(pairInsertionRules);
+  let elementCount = getElementCount(polymerTemplate);
+  let pairsToProcess = getPairsToProcess(polymerTemplate);
 
-  let polymer = cloneString(polymerTemplate);
   for (let step = 0; step < steps; step++) {
-    polymer = extendPolymer(polymer, pairInsertionRules);
+    pairsToProcess = processPairs(
+      pairsToProcess,
+      elementCount,
+      pairInsertionRules
+    );
   }
 
-  console.log(polymer);
-  return polymer;
-}
+  let mostCommon = Math.max(...Object.values(elementCount));
+  let leastCommon = Math.min(...Object.values(elementCount));
+  return mostCommon - leastCommon;
+};
 
-// NNCB
-export function extendPolymer(
-  polymer: string,
-  pairInsertionRules: Array<PairInsertionRule>
-): string {
-  const pairs = getPairs(polymer);
-  const extendedPairs = pairs.map((pair) =>
-    extendPair(pair, pairInsertionRules)
-  );
-  let newPolymer = extendedPairs[0];
-  for (let i = 1; i < extendedPairs.length; i++) {
-    const toAppend =
-      extendedPairs[i].length === 3
-        ? extendedPairs[i].substring(1, 3)
-        : extendedPairs[i];
+function processPairs(
+  pairsToProcess: Record<string, number>,
+  elementCount: Record<string, number>,
+  pairInsertionRules: PairInsertionRule[]
+): Record<string, number> {
+  let newPairsToProcess: Record<string, number> = {};
 
-    newPolymer += toAppend;
+  Object.entries(pairsToProcess).forEach((entity) => {
+    let pair = entity[0];
+    let qty = entity[1];
+    newPairsToProcess[pair] = qty;
+  });
+
+  for (let { pair, elementToInsert } of pairInsertionRules) {
+    if (!pairsToProcess[pair]) {
+      continue;
+    }
+
+    let elementCountOffset = pairsToProcess[pair];
+    addNewPairs(pair, elementToInsert, newPairsToProcess, elementCountOffset);
+
+    if (elementCount[elementToInsert]) {
+      elementCount[elementToInsert] += pairsToProcess[pair];
+    } else {
+      elementCount[elementToInsert] = 1;
+    }
   }
-  return newPolymer;
+
+  return newPairsToProcess;
 }
 
-function getPairs(polymer: string): Array<string> {
-  let pairs = Array<string>();
-  for (let i = 0; i < polymer.length - 1; i += 1) {
-    pairs.push(`${polymer[i]}${polymer[i + 1]}`);
-  }
-  return pairs;
-}
-
-function extendPair(
+function addNewPairs(
   pair: string,
-  pairInsertionRules: Array<PairInsertionRule>
-): string {
-  const pairInsertionRule = pairInsertionRules.find(
-    (rule) => rule.pair === pair
-  );
-  return pairInsertionRule
-    ? `${pair[0]}${pairInsertionRule.elementToInsert}${pair[1]}`
-    : pair;
+  element: string,
+  newPairsToProcess: Record<string, number>,
+  elementCountOffset: number
+) {
+  newPairsToProcess[pair] -= elementCountOffset;
+
+  var leftPair = `${pair[0]}${element}`;
+  var rightPair = `${element}${pair[1]}`;
+
+  if (newPairsToProcess[leftPair]) {
+    newPairsToProcess[leftPair] += elementCountOffset;
+  } else {
+    newPairsToProcess[leftPair] = elementCountOffset;
+  }
+
+  if (newPairsToProcess[rightPair]) {
+    newPairsToProcess[rightPair] += elementCountOffset;
+  } else {
+    newPairsToProcess[rightPair] = elementCountOffset;
+  }
+}
+
+function getElementCount(polymerTemplate: string): Record<string, number> {
+  const polymerElements = polymerTemplate.split("");
+  var elementCount: Record<string, number> = {};
+  polymerElements
+    .filter((element, i, self) => self.indexOf(element) === i)
+    .forEach(
+      (element) =>
+        (elementCount[element] = polymerElements.filter(
+          (el) => el === element
+        ).length)
+    );
+  return elementCount;
+}
+
+function getPairsToProcess(polymerTemplate: string): Record<string, number> {
+  const pairsToProcess: Record<string, number> = {};
+  const polymerElements = polymerTemplate.split("");
+  for (var i = 0; i < polymerElements.length - 1; i++) {
+    var pair = polymerTemplate.substring(i, i + 2);
+    if (pairsToProcess[pair]) {
+      pairsToProcess[pair] += 1;
+    } else {
+      pairsToProcess[pair] = 1;
+    }
+  }
+
+  return pairsToProcess;
 }
 
 export function mapInputs(
@@ -96,8 +117,4 @@ export function mapInputs(
     });
   }
   return [polymerTemplate, pairInsertionRules];
-}
-
-function cloneString(polymer: string) {
-  return (" " + polymer).slice(1);
 }
