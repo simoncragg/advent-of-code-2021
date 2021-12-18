@@ -1,5 +1,3 @@
-import { convertToBase10 } from "../../utils/base-convertion";
-
 export const computePowerConsumption = (diagnostics: Array<string>): number => {
   const gammaRate = computeRate(diagnostics, true);
   const epsilonRate = computeRate(diagnostics, false);
@@ -19,7 +17,7 @@ function computeRate(diagnostics: string[], useMostCommonBit: boolean) {
     diagnostics,
     useMostCommonBit
   );
-  return convertToBase10(mostSignificantBits);
+  return parseInt(mostSignificantBits, 2);
 }
 
 function computeRating(diagnostics: Array<string>, useMostCommonBit: boolean) {
@@ -37,7 +35,7 @@ function computeRating(diagnostics: Array<string>, useMostCommonBit: boolean) {
     );
     currentBitIndex++;
   }
-  return convertToBase10(candidates[0]);
+  return parseInt(candidates[0], 2);
 }
 
 function computeMostSignificantBits(
