@@ -15,7 +15,7 @@ describe("chiton", () => {
   describe("findLowestRisk with scaleFactor", () => {
     it.only.each([
       ["example.txt", 5, 315],
-      ["challenge.txt", 5, 2821],
+      //["challenge.txt", 5, 2821], slow
     ])(
       "when passed %p and scaleFactor %p, returns %p",
       (filename: string, scaleFactor: number, expected: number) => {
